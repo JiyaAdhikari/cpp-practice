@@ -5,6 +5,7 @@ class Node{
    public:
    int data;
    Node* next;
+   Node* prev;
 };
 
 void push_back(Node*& head,int val){
@@ -12,6 +13,7 @@ void push_back(Node*& head,int val){
     Node* newNode=new Node();
    newNode->data=val;
    newNode->next=NULL;
+   newNode->prev=NULL;
 
    if(head==NULL){
     head=newNode;
@@ -24,8 +26,20 @@ void push_back(Node*& head,int val){
          temp=temp->next;
       }
       temp->next=newNode;
+      newNode->prev=temp;
 }
 
+//transverse
+Node* Last(Node* head){
+
+     Node* temp=head;
+
+     while(temp->next!=NULL){
+      temp=temp->next;
+     }
+
+     return temp;
+}
 //reverse
 
 void reverse(Node*& head){
@@ -40,6 +54,19 @@ void reverse(Node*& head){
         current=next;
     }
     head=prev;
+}
+
+//palindrome
+
+bool ispalindrome(Node* head,Node* tail){
+   while(head!=tail && head->prev!=tail){
+       if(head->data != tail->data){
+         return false;
+       }
+       head=head->next;
+   tail=tail->prev;
+   }
+  return true;
 }
 
 void print(Node*& head){
@@ -62,9 +89,20 @@ int main(){
     push_back(head,55);
 
     print(head);
-
+    
     reverse(head);
     cout<<endl;
     print(head);
+    cout<<endl;
+    Node* tail=Last(head);
+
+    if(ispalindrome(head,tail)){
+      cout<<"PALINDROME";
+    }
+    else{
+      cout<<"NOT PALINDROME";
+    }
+
+    return 0;
 
 }
